@@ -271,7 +271,3 @@ output Y1, Y2;
 endmodule
 
 //Cau 1 de 16-17
-
-
-
-EDITTTTTTTTTTTTTTTTTTTTTTTTT
