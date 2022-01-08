@@ -42,10 +42,10 @@ input [3:0] A, B;
 input control;
 output [3:0] S;
 wire c1, c2, c3;
-FA U0 (.A(A[0]), .B(B[0]^control), .Cin(control), .S(S[0]), .Cout(c1));
-FA U1 (.A(A[1]), .B(B[1]^control), .Cin(c1), .S(S[1]), .Cout(c2));
-FA U2 (.A(A[2]), .B(B[2]^control), .Cin(c2), .S(S[2]), .Cout(c3));
-FA U3 (.A(A[3]), .B(B[3]^control), .Cin(c3), .S(S[3]), .Cout(  ));
+	FA U0 (.A(A[0]), .B(B[0]^control), .Cin(control), .S(S[0]), .Cout(c1));
+	FA U1 (.A(A[1]), .B(B[1]^control), .Cin(c1), .S(S[1]), .Cout(c2));
+	FA U2 (.A(A[2]), .B(B[2]^control), .Cin(c2), .S(S[2]), .Cout(c3));
+	FA U3 (.A(A[3]), .B(B[3]^control), .Cin(c3), .S(S[3]), .Cout(  ));
 endmodule
 //bảo toàn số bit nên cout của U3 không có ra ( bỏ trống )
 
@@ -163,7 +163,7 @@ reg [24:0] counter; //bộ đếm 25bit để chia 50Mhz còn 1Hz
 always @ (posedge CLK)
 	counter = counter + 1'b1;
 	
-always @ (posedge CLK)
+always @ (posedge counter[25])
 	Q = Q + 1'1b;
 endmodule
 
@@ -224,7 +224,7 @@ always @(posedge clk)
 	else
 		Q <= {Q[0], Q[7:1]}; //dich tu trai sang phai
 		Q <= {Q[6:0], Q[7]}; //dich tu phai sang trai	
-		Q <= {Q[4], Q[7:5], Q[2:0], Q[3]}; //4 bit lon dich trai, 4 bit nho dich phai, dich tu ngoai vao giua
+		Q <= {Q[4], Q[7:5], Q[2:0], Q[3]}; //4 bit lon dich phai, 4 bit nho dich trai, dich tu ngoai vao giua
 		Q <= {~Q[0], Q[7:1]}; //sang tu trai sang phai va tat tu trai sang phai
 endmodule
 
@@ -255,11 +255,19 @@ module test(input clk, input rst, output reg [7:0] Q);
 			if (~rst) 
 				Q <= 4'd0;
 			else
-				if (Q == 8'd10)
+				if (Q == 8'd9)
 					Q <= 4'd0;
 				else
 					Q <= Q + 1'b1;
 		end
 endmodule
 
-#edit...
+//Cau 1 de 16-17
+module Verilog_Test(A, B, C, D, Y1, Y2);
+input A, B, C, D;
+output Y1, Y2;
+	assign Y1 = ~(A|B);
+	assign Y2 = ( (~(A|B)) ~^ (~(C&D)) ); 
+endmodule
+
+//Cau 1 de 16-17
